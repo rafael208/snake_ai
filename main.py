@@ -1,23 +1,48 @@
-# main.py (историческая CLI-версия)
+# main.py (промежуточная версия: меню без соревнования)
+
+import pygame
 
 from game import Game
+from menu import Menu
+from ui import UI
 
 
 def main() -> None:
-    print("Snake AI — консольный запуск")
-    width = int(input("Ширина поля (5–30): "))
-    height = int(input("Высота поля (5–30): "))
-    apples = int(input("Количество яблок: "))
+    pygame.init()
 
-    game = Game(width, height, apples, Game.SMART)
+    try:
+        menu = Menu()
 
-    while game.running and not game.won:
-        game.update()
+        while True:
+            settings = menu.run()
+            if settings is None:
+                break
 
-    if game.won:
-        print(f"Победа! Ходов: {game.moves}")
-    else:
-        print(f"Проигрыш. Ходов: {game.moves}")
+            mode = settings["mode"]
+            if mode == Game.COMPETITION:
+                # Соревнование появится в следующем коммите.
+                mode = Game.SMART
+
+            game = Game(
+                settings["width"],
+                settings["height"],
+                settings["apple_count"],
+                mode,
+            )
+            ui = UI(game)
+            action = ui.run()
+
+            menu.set_defaults(
+                game.board.width,
+                game.board.height,
+                game.apple_count,
+                game.mode,
+            )
+
+            if action == "quit":
+                break
+    finally:
+        pygame.quit()
 
 
 if __name__ == "__main__":
