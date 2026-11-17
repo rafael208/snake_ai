@@ -90,7 +90,7 @@ class SnakeAI:
 
         # Включать ли быстрый безопасный режим (сбор яблок по BFS).
         # Режим работает, пока коэффициент опасности ниже порога.
-        self.fast_enabled = False
+        self.fast_enabled = True
         self.danger = 0.0
 
         # Режим восстановления: план выстраивания и счётчик посещений.
@@ -489,7 +489,23 @@ class SnakeAI:
         if not body:
             return None
 
-        # Историческая версия: только гарантированный обход кольца.
+        # Сначала пробуем быстрый безопасный сбор яблок. Он даёт
+        # скорость, сравнимую с человеческой, но не отменяет
+        # гарантированный обход кольца как резервный режим.
+        self.danger = self._danger_level(body)
+
+        if self.fast_enabled and self.danger < self.DANGER_LIMIT:
+            fast = self._fast_move(body, apples)
+
+            if fast is not None:
+                move, path = fast
+                self.mode = self.FAST
+                self.planned_path = path
+                self._recovery_plan = []
+                self._recovery_visits.clear()
+                self._recovery_stall = 0
+                return move
+
         if self.has_cycle:
             direction = self._find_direction(body)
 

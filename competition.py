@@ -223,7 +223,7 @@ class Competition:
 
         # Быстрый режим включается по коэффициенту опасности:
         # пока позиция просторная — сбор яблок, дальше кольцо.
-        ai_game.ai.fast_enabled = False
+        ai_game.ai.fast_enabled = True
 
         self.ai_ui = UI(
             ai_game,
