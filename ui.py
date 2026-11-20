@@ -866,27 +866,43 @@ class UI:
 
         cell = self.cell_size
         previous = self.previous_body or body
-        alpha = (pygame.time.get_ticks() - self.animation_start)
+
+        alpha = pygame.time.get_ticks() - self.animation_start
         alpha = max(0.0, min(1.0, alpha / self.animation_duration))
 
-        centers = []
-        for index, cell_pos in enumerate(body):
-            old = previous[min(index, len(previous) - 1)]
-            old_x, old_y = self.cell_center(*old)
-            new_x, new_y = self.cell_center(*cell_pos)
-            centers.append(
-                (
-                    int(old_x + (new_x - old_x) * alpha),
-                    int(old_y + (new_y - old_y) * alpha),
-                )
-            )
+        old_head = self.cell_center(*previous[0])
+        new_head = self.cell_center(*body[0])
+        head_pos = (
+            int(old_head[0] + (new_head[0] - old_head[0]) * alpha),
+            int(old_head[1] + (new_head[1] - old_head[1]) * alpha),
+        )
 
+        if not self.trail:
+            self._reset_trail()
+
+        if self._distance(self.trail[-1], head_pos) > 0.5:
+            self.trail.append(head_pos)
+
+        target_length = max(0, (len(body) - 1)) * cell
+
+        # Держим небольшой запас следа, а лишнее срезаем с хвоста.
+        while (
+            len(self.trail) > 2
+            and self._trail_length() > target_length + cell * 1.5
+        ):
+            self.trail.pop(0)
+
+        samples = self._sample_trail(len(body), cell)
+        iterations = 2 if len(samples) <= 300 else 1
         points = [
             (int(x), int(y))
-            for x, y in self._smooth_path(centers, 2)
+            for x, y in self._smooth_path(samples, iterations)
         ]
-        length = len(points)
 
+        if len(points) < 2:
+            points = [head_pos, head_pos]
+
+        length = len(points)
         body_color = self.snake_body_color
         head_color = self.snake_head_color
         tail_color = self._mix(body_color, (0, 0, 0), 0.18)
@@ -903,27 +919,30 @@ class UI:
                 points[i - 1],
                 width,
             )
-            pygame.draw.circle(
-                self.screen,
-                color,
-                points[i],
-                width // 2,
-            )
 
-        if len(points) > 1:
-            dx = points[0][0] - points[1][0]
-            dy = points[0][1] - points[1][1]
-            if dx == 0 and dy == 0:
-                dx, dy = 1, 0
-            angle = int(
-                round(math.degrees(math.atan2(-dy, dx)) / 3.0) * 3
-            )
-        else:
-            angle = 0
+            if length < 600 or i % 2 == 0:
+                pygame.draw.circle(
+                    self.screen,
+                    color,
+                    points[i],
+                    width // 2,
+                )
+
+        # Направление головы по сглаженной траектории.
+        dx = points[0][0] - points[1][0]
+        dy = points[0][1] - points[1][1]
+        if dx == 0 and dy == 0:
+            dx = body[0][0] - body[1][0] if len(body) > 1 else 1
+            dy = body[0][1] - body[1][1] if len(body) > 1 else 0
+
+        angle = int(
+            round(math.degrees(math.atan2(-dy, dx)) / 3.0) * 3
+        )
 
         head_size = int(cell * 1.08) + 2
         head_name = f"snake_head_{self.asset_theme}"
         head = self._sprite(head_name, head_size, angle)
+
         self.screen.blit(
             head,
             (
