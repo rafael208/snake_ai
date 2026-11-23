@@ -282,7 +282,29 @@ class SnakeAI:
     # БЫСТРЫЙ БЕЗОПАСНЫЙ РЕЖИМ
     # ================================================================
 
-    def _fast_move(self, body: list[Cell], apples: set[Cell]):
+    def _bfs_from_head(self, body: list[Cell]):
+        """Один BFS: предыдущие клетки и достижимая область из головы."""
+        head = body[0]
+        blocked = set(body[:-1])
+        previous = {head: None}
+        queue = deque([head])
+
+        while queue:
+            current = queue.popleft()
+            for neighbor in self._neighbors[current]:
+                if neighbor in previous or neighbor in blocked:
+                    continue
+                previous[neighbor] = current
+                queue.append(neighbor)
+
+        return previous
+
+    def _fast_move(
+        self,
+        body: list[Cell],
+        apples: set[Cell],
+        previous=None,
+    ):
         """
         Самый короткий путь до ближайшего яблока, после которого
         змейка сохраняет возможность добраться до хвоста и имеет
@@ -294,24 +316,12 @@ class SnakeAI:
             return None
 
         head = body[0]
-        tail = body[-1]
         body_set = set(body)
 
-        # BFS по свободным клеткам; хвост считается проходимым,
-        # потому что он уходит в этот же ход.
-        blocked = set(body_set)
-        blocked.discard(tail)
-
-        previous = {head: None}
-        queue = deque([head])
-
-        while queue:
-            current = queue.popleft()
-            for neighbor in self._neighbors[current]:
-                if neighbor in previous or neighbor in blocked:
-                    continue
-                previous[neighbor] = current
-                queue.append(neighbor)
+        # BFS можно переиспользовать из проверки опасности: блокировка
+        # тела там точно такая же (хвост уже не считается занятым).
+        if previous is None:
+            previous = self._bfs_from_head(body)
 
         candidates = []
 
@@ -372,21 +382,24 @@ class SnakeAI:
         """Проигрывает путь и проверяет безопасность позиции после него."""
         snake = list(body)
         eaten: set[Cell] = set()
+        occupied = set(snake)
 
         for cell in path:
             eating = cell in apples
 
-            occupied = set(snake)
             if not eating:
+                # Хвост уходит в этот же ход, поэтому он не блокирует.
                 occupied.discard(snake[-1])
 
             if cell in occupied:
                 return None
 
             snake.insert(0, cell)
+            occupied.add(cell)
+
             if not eating:
                 snake.pop()
-            if eating:
+            else:
                 eaten.add(cell)
 
         # После хода хвост ещё будет двигаться, поэтому он свободен.
@@ -431,7 +444,7 @@ class SnakeAI:
             return 0.10
         return 0.0
 
-    def _danger_level(self, body: list[Cell]) -> float:
+    def _danger_level(self, body: list[Cell], previous=None) -> float:
         """
         Коэффициент опасности 0..1.
 
@@ -449,20 +462,12 @@ class SnakeAI:
         )
 
         # Свободная область, доступная из головы. Хвост считаем
-        # свободным: он уходит в этот же ход.
-        blocked = set(body[:-1])
-        reachable = {body[0]}
-        queue = deque([body[0]])
+        # свободным: он уходит в этот же ход. Тот же BFS уже мог быть
+        # посчитан для FAST-пути.
+        if previous is None:
+            previous = self._bfs_from_head(body)
 
-        while queue:
-            current = queue.popleft()
-            for neighbor in self._neighbors[current]:
-                if neighbor in reachable or neighbor in blocked:
-                    continue
-                reachable.add(neighbor)
-                queue.append(neighbor)
-
-        free = len(reachable) - 1
+        free = len(previous) - 1
         room = free / max(1, length)
         room_risk = 1.0 - min(1.0, room / 2.5)
 
@@ -492,10 +497,11 @@ class SnakeAI:
         # Сначала пробуем быстрый безопасный сбор яблок. Он даёт
         # скорость, сравнимую с человеческой, но не отменяет
         # гарантированный обход кольца как резервный режим.
-        self.danger = self._danger_level(body)
+        search = self._bfs_from_head(body)
+        self.danger = self._danger_level(body, search)
 
         if self.fast_enabled and self.danger < self.DANGER_LIMIT:
-            fast = self._fast_move(body, apples)
+            fast = self._fast_move(body, apples, search)
 
             if fast is not None:
                 move, path = fast
