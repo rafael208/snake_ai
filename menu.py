@@ -26,6 +26,7 @@ from config import (
     COMPETITION_TARGET_MAX,
     COMPETITION_TARGET_MIN,
     DANGER_COLOR,
+    FPS,
     MAX_APPLES,
     MAX_BOARD_SIZE,
     MENU_BACKGROUND_BOTTOM,
@@ -37,6 +38,8 @@ from config import (
     MUTED_TEXT_COLOR,
     PANEL_BORDER_COLOR,
     PANEL_COLOR,
+    SPEED_MAX,
+    SPEED_MIN,
     SUCCESS_COLOR,
     TEXT_COLOR,
     TEXT_ON_ACCENT,
@@ -54,11 +57,12 @@ from layout import (
 FOCUS_WIDTH = 0
 FOCUS_HEIGHT = 1
 FOCUS_APPLES = 2
-FOCUS_MODE = 3
-FOCUS_TARGET = 4
-FOCUS_START = 5
+FOCUS_SPEED = 3
+FOCUS_MODE = 4
+FOCUS_TARGET = 5
+FOCUS_START = 6
 
-FOCUS_COUNT = 6
+FOCUS_COUNT = 7
 
 GAME_MODES = (
     Game.SMART,
@@ -84,6 +88,7 @@ class Menu:
         self.width = 20
         self.height = 20
         self.apples = 5
+        self.speed = FPS
         self.mode = Game.SMART
 
         self.competition_target = COMPETITION_TARGET
@@ -137,12 +142,16 @@ class Menu:
         mode: str,
         competition_target: int | None = None,
         competition_full_board: bool | None = None,
+        speed: int | None = None,
     ) -> None:
         """Запоминает параметры последней партии."""
         self.width = _clamp(width, MIN_BOARD_SIZE, MAX_BOARD_SIZE)
         self.height = _clamp(height, MIN_BOARD_SIZE, MAX_BOARD_SIZE)
         self.apples = _clamp(apple_count, 1, self.max_apples)
         self.mode = mode
+
+        if speed is not None:
+            self.speed = _clamp(speed, SPEED_MIN, SPEED_MAX)
 
         if competition_target is not None:
             self.competition_target = _clamp(
@@ -277,6 +286,7 @@ class Menu:
             FOCUS_WIDTH,
             FOCUS_HEIGHT,
             FOCUS_APPLES,
+            FOCUS_SPEED,
             FOCUS_MODE,
         ]
 
@@ -368,6 +378,8 @@ class Menu:
             ("height_plus", FOCUS_HEIGHT, 1),
             ("apples_minus", FOCUS_APPLES, -1),
             ("apples_plus", FOCUS_APPLES, 1),
+            ("speed_minus", FOCUS_SPEED, -1),
+            ("speed_plus", FOCUS_SPEED, 1),
             ("target_minus", FOCUS_TARGET, -1),
             ("target_plus", FOCUS_TARGET, 1),
         )
@@ -403,6 +415,7 @@ class Menu:
             FOCUS_WIDTH,
             FOCUS_HEIGHT,
             FOCUS_APPLES,
+            FOCUS_SPEED,
             FOCUS_TARGET,
         ):
             rect = rects.get(f"row_{focus}")
@@ -420,6 +433,7 @@ class Menu:
             FOCUS_WIDTH,
             FOCUS_HEIGHT,
             FOCUS_APPLES,
+            FOCUS_SPEED,
             FOCUS_MODE,
             FOCUS_TARGET,
         ):
@@ -445,6 +459,13 @@ class Menu:
                 self.apples + delta,
                 1,
                 self.max_apples,
+            )
+
+        elif focus == FOCUS_SPEED:
+            self.speed = _clamp(
+                self.speed + delta,
+                SPEED_MIN,
+                SPEED_MAX,
             )
 
         elif focus == FOCUS_MODE:
@@ -490,6 +511,7 @@ class Menu:
             "width": self.width,
             "height": self.height,
             "apple_count": self.apples,
+            "fps": self.speed,
             "mode": self.mode,
             "competition_target": self.competition_target,
             "competition_full_board": (
@@ -588,23 +610,24 @@ class Menu:
         inner_right = panel_x + panel_width - 22
         inner_width = inner_right - inner_x
 
-        row_1 = panel_y + 18
-        row_2 = row_1 + 56
-        row_3 = row_2 + 56
-        presets_y = row_3 + 60
+        row_1 = panel_y + 14
+        row_2 = row_1 + 50
+        row_3 = row_2 + 50
+        speed_y = row_3 + 50
+        presets_y = speed_y + 52
 
-        competition_y = presets_y + 50
+        competition_y = presets_y + 46
 
         if self.mode == Game.COMPETITION:
             mode_y = competition_y + 48
         else:
-            mode_y = presets_y + 54
+            mode_y = presets_y + 50
 
-        caption_y = mode_y + 58
-        panel_bottom = caption_y + 22
+        caption_y = mode_y + 52
+        panel_bottom = caption_y + 20
         panel_height = panel_bottom - panel_y
 
-        preview_y = max(panel_bottom + 14, height - 142)
+        preview_y = max(panel_bottom + 4, height - 142)
         start_y = height - 108
         footer_y = height - 32
 
@@ -678,6 +701,18 @@ class Menu:
             1,
             self.max_apples,
             "apples",
+            inner_x,
+            inner_right,
+        )
+
+        self._draw_numeric_row(
+            "Скорость игры (FPS)",
+            speed_y,
+            FOCUS_SPEED,
+            self.speed,
+            SPEED_MIN,
+            SPEED_MAX,
+            "speed",
             inner_x,
             inner_right,
         )
@@ -785,7 +820,7 @@ class Menu:
                     if self.competition_full_board
                     else f"до {self.competition_target} яблок"
                 )
-                + " · "
+                + f" · {self.speed} FPS · "
                 + (
                     "полностью помещаются на экране"
                     if fits
@@ -809,6 +844,7 @@ class Menu:
                 f"Окно игры: {game_layout.window_width} × "
                 f"{game_layout.window_height} px · "
                 f"клетка {game_layout.cell_size} px · "
+                f"{self.speed} FPS · "
                 + (
                     "полностью помещается на экране"
                     if fits

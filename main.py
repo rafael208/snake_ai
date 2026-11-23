@@ -8,7 +8,7 @@ os.environ.setdefault("SDL_VIDEO_CENTERED", "1")
 import pygame
 
 from competition import Competition
-from config import COMPETITION_TARGET
+from config import COMPETITION_TARGET, FPS
 from game import Game
 from menu import Menu
 from ui import UI
@@ -18,8 +18,8 @@ def main() -> None:
     """
     Графическое меню → игра (или соревнование) → снова меню.
 
-    Никакого консольного ввода: размер поля, число яблок и режим
-    выбираются в окне меню.
+    Никакого консольного ввода: размер поля, число яблок, скорость
+    и режим выбираются в окне меню.
     """
     pygame.init()
 
@@ -47,6 +47,7 @@ def main() -> None:
                         "competition_full_board",
                         False,
                     ),
+                    fps=settings.get("fps", FPS),
                 )
 
                 action = competition.run()
@@ -64,6 +65,7 @@ def main() -> None:
                         "competition_full_board",
                         False,
                     ),
+                    speed=settings.get("fps", FPS),
                 )
 
             else:
@@ -75,7 +77,10 @@ def main() -> None:
                     settings["mode"],
                 )
 
-                ui = UI(game)
+                ui = UI(
+                    game,
+                    fps=settings.get("fps", FPS),
+                )
 
                 action = ui.run()
 
@@ -86,6 +91,7 @@ def main() -> None:
                     ui.game.board.height,
                     ui.game.apple_count,
                     ui.game.mode,
+                    speed=ui.fps,
                 )
 
             if action == "quit":

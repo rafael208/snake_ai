@@ -66,11 +66,13 @@ class Competition:
         apple_count: int,
         target: int = COMPETITION_TARGET,
         full_board: bool = False,
+        fps: int = FPS,
     ):
 
         self.width = width
         self.height = height
         self.apple_count = apple_count
+        self.fps = max(1, int(fps))
 
         self.full_board = bool(full_board)
         max_target = max(1, width * height - 3)
@@ -229,11 +231,13 @@ class Competition:
             ai_game,
             screen=self._ai_surface,
             layout=self._layout,
+            fps=self.fps,
         )
         self.human_ui = UI(
             human_game,
             screen=self._human_surface,
             layout=self._layout,
+            fps=self.fps,
         )
 
         self.human_ui.snake_head_color = PLAYER_HEAD_COLOR
@@ -715,7 +719,7 @@ class Competition:
             self._render()
 
             next_tick = pygame.time.get_ticks()
-            frame_ms = 1000.0 / FPS
+            frame_ms = 1000.0 / self.fps
 
             while running:
                 running = self._handle_events()

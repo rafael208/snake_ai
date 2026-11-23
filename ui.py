@@ -35,13 +35,15 @@ class UI:
         game: Game,
         screen=None,
         layout=None,
+        fps: int = FPS,
     ):
 
         self.game = game
+        self.fps = max(1, int(fps))
 
         self.previous_body = list(game.snake.body)
         self.animation_start = pygame.time.get_ticks()
-        self.animation_duration = 1000.0 / FPS
+        self.animation_duration = 1000.0 / self.fps
         self.trail = []
 
         self.layout = layout or compute_game_layout(
@@ -1011,7 +1013,8 @@ class UI:
         meta = (
             f"ПОЛЕ {self.game.board.width}×"
             f"{self.game.board.height}  ·  "
-            f"КЛЕТКА {self.cell_size} PX"
+            f"КЛЕТКА {self.cell_size} PX  ·  "
+            f"{self.fps} FPS"
         )
         meta_surface = self._fit_surface(
             meta,
@@ -1330,7 +1333,7 @@ class UI:
         running = True
 
         next_tick = pygame.time.get_ticks()
-        frame_ms = 1000.0 / FPS
+        frame_ms = 1000.0 / self.fps
 
         while running:
 
