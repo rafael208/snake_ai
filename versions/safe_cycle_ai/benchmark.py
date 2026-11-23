@@ -3,7 +3,6 @@
 Runs only Game.SMART with the FAST mode disabled and records:
   * wins;
   * moves to completely fill the board;
-  * headless CPU time;
   * estimated in-game time at config.FPS (8 moves/s).
 
 Run from this folder:
@@ -14,7 +13,6 @@ from __future__ import annotations
 
 import json
 import random
-import time
 from pathlib import Path
 import statistics
 
@@ -53,12 +51,10 @@ def run_game(width, height, apples, seed):
     game = Game(width, height, apples, Game.SMART)
 
     limit = width * height * width * height * 4 + 1000
-    started = time.perf_counter()
 
     while game.running and not game.won and game.moves < limit:
         game.update()
 
-    cpu = time.perf_counter() - started
     body = len(game.snake.body)
 
     return {
@@ -67,7 +63,6 @@ def run_game(width, height, apples, seed):
         "crashed": not game.running,
         "moves": game.moves,
         "length": body,
-        "cpu_seconds": cpu,
         "fast_enabled": bool(game.ai.fast_enabled),
         "final_mode": game.ai.mode,
     }
@@ -89,9 +84,7 @@ def main():
 
         won = sum(1 for result in results if result["won"])
         moves = [result["moves"] for result in results]
-        cpus = [result["cpu_seconds"] for result in results]
         avg_moves = statistics.mean(moves)
-        avg_cpu = statistics.mean(cpus)
         game_minutes = avg_moves / FPS / 60.0
         cells = width * height
         moves_per_apple = avg_moves / max(1, cells - 3)
@@ -104,7 +97,6 @@ def main():
                 "games": games,
                 "wins": won,
                 "avg_moves": round(avg_moves, 1),
-                "avg_cpu_seconds": round(avg_cpu, 4),
                 "game_minutes": round(game_minutes, 1),
                 "moves_per_apple": round(moves_per_apple, 1),
             }
@@ -112,7 +104,7 @@ def main():
         print(
             f"{width}x{height} apples={apples}: "
             f"{won}/{games} wins, moves={avg_moves:.0f}, "
-            f"game={game_minutes:.1f} min, cpu={avg_cpu:.3f}s"
+            f"game={game_minutes:.1f} min"
         )
 
     payload = {
@@ -142,19 +134,18 @@ def main():
         "минуты = ходы / 8 / 60",
         "```",
         "",
-        "CPU-время — это время headless-симуляции без графики, не время",
-        "реальной игры. Для 30×30 с одним яблоком партия очень длинная,",
-        "поэтому запускался один seed.",
+        "Для 30×30 с одним яблоком партия очень длинная, поэтому",
+        "запускался один seed.",
         "",
-        "| Поле | Яблок | Партий | Побед | Средние ходы | CPU, с | Время игры, мин | Ходов на яблоко |",
-        "|---|---:|---:|---:|---:|---:|---:|---:|",
+        "| Поле | Яблок | Партий | Побед | Средние ходы | Время игры, мин | Ходов на яблоко |",
+        "|---|---:|---:|---:|---:|---:|---:|",
     ]
 
     for row in rows:
         lines.append(
             f"| {row['width']}×{row['height']} | {row['apples']} | "
             f"{row['games']} | {row['wins']}/{row['games']} | "
-            f"{row['avg_moves']} | {row['avg_cpu_seconds']} | "
+            f"{row['avg_moves']} | "
             f"{row['game_minutes']} | {row['moves_per_apple']} |"
         )
 

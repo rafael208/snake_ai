@@ -1,0 +1,1021 @@
+{
+  "algorithm": "FAST safe BFS + danger-aware switch to CYCLE",
+  "fps": 8,
+  "game_minutes_formula": "moves / FPS / 60",
+  "configurations": [
+    {
+      "width": 5,
+      "height": 5,
+      "apples": 1,
+      "games": 3,
+      "wins": 3,
+      "avg_moves": 154.7,
+      "game_minutes": 0.3,
+      "moves_per_apple": 7.0
+    },
+    {
+      "width": 5,
+      "height": 5,
+      "apples": 3,
+      "games": 3,
+      "wins": 3,
+      "avg_moves": 56,
+      "game_minutes": 0.1,
+      "moves_per_apple": 2.5
+    },
+    {
+      "width": 5,
+      "height": 5,
+      "apples": 10,
+      "games": 3,
+      "wins": 3,
+      "avg_moves": 37.3,
+      "game_minutes": 0.1,
+      "moves_per_apple": 1.7
+    },
+    {
+      "width": 6,
+      "height": 6,
+      "apples": 1,
+      "games": 3,
+      "wins": 3,
+      "avg_moves": 277.7,
+      "game_minutes": 0.6,
+      "moves_per_apple": 8.4
+    },
+    {
+      "width": 6,
+      "height": 6,
+      "apples": 3,
+      "games": 3,
+      "wins": 3,
+      "avg_moves": 119.3,
+      "game_minutes": 0.2,
+      "moves_per_apple": 3.6
+    },
+    {
+      "width": 6,
+      "height": 6,
+      "apples": 10,
+      "games": 3,
+      "wins": 3,
+      "avg_moves": 47.7,
+      "game_minutes": 0.1,
+      "moves_per_apple": 1.4
+    },
+    {
+      "width": 7,
+      "height": 7,
+      "apples": 1,
+      "games": 3,
+      "wins": 3,
+      "avg_moves": 526.7,
+      "game_minutes": 1.1,
+      "moves_per_apple": 11.4
+    },
+    {
+      "width": 7,
+      "height": 7,
+      "apples": 3,
+      "games": 3,
+      "wins": 3,
+      "avg_moves": 220,
+      "game_minutes": 0.5,
+      "moves_per_apple": 4.8
+    },
+    {
+      "width": 7,
+      "height": 7,
+      "apples": 10,
+      "games": 3,
+      "wins": 3,
+      "avg_moves": 120.7,
+      "game_minutes": 0.3,
+      "moves_per_apple": 2.6
+    },
+    {
+      "width": 10,
+      "height": 10,
+      "apples": 1,
+      "games": 3,
+      "wins": 3,
+      "avg_moves": 2345.3,
+      "game_minutes": 4.9,
+      "moves_per_apple": 24.2
+    },
+    {
+      "width": 10,
+      "height": 10,
+      "apples": 3,
+      "games": 3,
+      "wins": 3,
+      "avg_moves": 822,
+      "game_minutes": 1.7,
+      "moves_per_apple": 8.5
+    },
+    {
+      "width": 10,
+      "height": 10,
+      "apples": 10,
+      "games": 3,
+      "wins": 3,
+      "avg_moves": 294.3,
+      "game_minutes": 0.6,
+      "moves_per_apple": 3.0
+    },
+    {
+      "width": 15,
+      "height": 15,
+      "apples": 1,
+      "games": 2,
+      "wins": 2,
+      "avg_moves": 11244,
+      "game_minutes": 23.4,
+      "moves_per_apple": 50.6
+    },
+    {
+      "width": 15,
+      "height": 15,
+      "apples": 3,
+      "games": 2,
+      "wins": 2,
+      "avg_moves": 4012,
+      "game_minutes": 8.4,
+      "moves_per_apple": 18.1
+    },
+    {
+      "width": 15,
+      "height": 15,
+      "apples": 10,
+      "games": 2,
+      "wins": 2,
+      "avg_moves": 1482,
+      "game_minutes": 3.1,
+      "moves_per_apple": 6.7
+    },
+    {
+      "width": 20,
+      "height": 20,
+      "apples": 1,
+      "games": 2,
+      "wins": 2,
+      "avg_moves": 34329,
+      "game_minutes": 71.5,
+      "moves_per_apple": 86.5
+    },
+    {
+      "width": 20,
+      "height": 20,
+      "apples": 3,
+      "games": 2,
+      "wins": 2,
+      "avg_moves": 12600.5,
+      "game_minutes": 26.3,
+      "moves_per_apple": 31.7
+    },
+    {
+      "width": 20,
+      "height": 20,
+      "apples": 10,
+      "games": 2,
+      "wins": 2,
+      "avg_moves": 3840.5,
+      "game_minutes": 8.0,
+      "moves_per_apple": 9.7
+    },
+    {
+      "width": 30,
+      "height": 30,
+      "apples": 1,
+      "games": 1,
+      "wins": 1,
+      "avg_moves": 185188,
+      "game_minutes": 385.8,
+      "moves_per_apple": 206.5
+    },
+    {
+      "width": 30,
+      "height": 30,
+      "apples": 3,
+      "games": 1,
+      "wins": 1,
+      "avg_moves": 63390,
+      "game_minutes": 132.1,
+      "moves_per_apple": 70.7
+    },
+    {
+      "width": 30,
+      "height": 30,
+      "apples": 10,
+      "games": 1,
+      "wins": 1,
+      "avg_moves": 20104,
+      "game_minutes": 41.9,
+      "moves_per_apple": 22.4
+    }
+  ],
+  "details": [
+    {
+      "width": 5,
+      "height": 5,
+      "apples": 1,
+      "seed": 1,
+      "won": true,
+      "crashed": false,
+      "moves": 158,
+      "length": 25,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 5,
+      "height": 5,
+      "apples": 1,
+      "seed": 2,
+      "won": true,
+      "crashed": false,
+      "moves": 148,
+      "length": 25,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST"
+      ]
+    },
+    {
+      "width": 5,
+      "height": 5,
+      "apples": 1,
+      "seed": 3,
+      "won": true,
+      "crashed": false,
+      "moves": 158,
+      "length": 25,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 5,
+      "height": 5,
+      "apples": 3,
+      "seed": 1,
+      "won": true,
+      "crashed": false,
+      "moves": 46,
+      "length": 25,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST"
+      ]
+    },
+    {
+      "width": 5,
+      "height": 5,
+      "apples": 3,
+      "seed": 2,
+      "won": true,
+      "crashed": false,
+      "moves": 58,
+      "length": 25,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 5,
+      "height": 5,
+      "apples": 3,
+      "seed": 3,
+      "won": true,
+      "crashed": false,
+      "moves": 64,
+      "length": 25,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 5,
+      "height": 5,
+      "apples": 10,
+      "seed": 1,
+      "won": true,
+      "crashed": false,
+      "moves": 54,
+      "length": 25,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 5,
+      "height": 5,
+      "apples": 10,
+      "seed": 2,
+      "won": true,
+      "crashed": false,
+      "moves": 26,
+      "length": 25,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST"
+      ]
+    },
+    {
+      "width": 5,
+      "height": 5,
+      "apples": 10,
+      "seed": 3,
+      "won": true,
+      "crashed": false,
+      "moves": 32,
+      "length": 25,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 6,
+      "height": 6,
+      "apples": 1,
+      "seed": 1,
+      "won": true,
+      "crashed": false,
+      "moves": 238,
+      "length": 36,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST"
+      ]
+    },
+    {
+      "width": 6,
+      "height": 6,
+      "apples": 1,
+      "seed": 2,
+      "won": true,
+      "crashed": false,
+      "moves": 346,
+      "length": 36,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST"
+      ]
+    },
+    {
+      "width": 6,
+      "height": 6,
+      "apples": 1,
+      "seed": 3,
+      "won": true,
+      "crashed": false,
+      "moves": 249,
+      "length": 36,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST"
+      ]
+    },
+    {
+      "width": 6,
+      "height": 6,
+      "apples": 3,
+      "seed": 1,
+      "won": true,
+      "crashed": false,
+      "moves": 97,
+      "length": 36,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST"
+      ]
+    },
+    {
+      "width": 6,
+      "height": 6,
+      "apples": 3,
+      "seed": 2,
+      "won": true,
+      "crashed": false,
+      "moves": 118,
+      "length": 36,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 6,
+      "height": 6,
+      "apples": 3,
+      "seed": 3,
+      "won": true,
+      "crashed": false,
+      "moves": 143,
+      "length": 36,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST"
+      ]
+    },
+    {
+      "width": 6,
+      "height": 6,
+      "apples": 10,
+      "seed": 1,
+      "won": true,
+      "crashed": false,
+      "moves": 49,
+      "length": 36,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST"
+      ]
+    },
+    {
+      "width": 6,
+      "height": 6,
+      "apples": 10,
+      "seed": 2,
+      "won": true,
+      "crashed": false,
+      "moves": 47,
+      "length": 36,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST"
+      ]
+    },
+    {
+      "width": 6,
+      "height": 6,
+      "apples": 10,
+      "seed": 3,
+      "won": true,
+      "crashed": false,
+      "moves": 47,
+      "length": 36,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST"
+      ]
+    },
+    {
+      "width": 7,
+      "height": 7,
+      "apples": 1,
+      "seed": 1,
+      "won": true,
+      "crashed": false,
+      "moves": 612,
+      "length": 49,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 7,
+      "height": 7,
+      "apples": 1,
+      "seed": 2,
+      "won": true,
+      "crashed": false,
+      "moves": 534,
+      "length": 49,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST"
+      ]
+    },
+    {
+      "width": 7,
+      "height": 7,
+      "apples": 1,
+      "seed": 3,
+      "won": true,
+      "crashed": false,
+      "moves": 434,
+      "length": 49,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 7,
+      "height": 7,
+      "apples": 3,
+      "seed": 1,
+      "won": true,
+      "crashed": false,
+      "moves": 232,
+      "length": 49,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 7,
+      "height": 7,
+      "apples": 3,
+      "seed": 2,
+      "won": true,
+      "crashed": false,
+      "moves": 204,
+      "length": 49,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 7,
+      "height": 7,
+      "apples": 3,
+      "seed": 3,
+      "won": true,
+      "crashed": false,
+      "moves": 224,
+      "length": 49,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST"
+      ]
+    },
+    {
+      "width": 7,
+      "height": 7,
+      "apples": 10,
+      "seed": 1,
+      "won": true,
+      "crashed": false,
+      "moves": 120,
+      "length": 49,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST"
+      ]
+    },
+    {
+      "width": 7,
+      "height": 7,
+      "apples": 10,
+      "seed": 2,
+      "won": true,
+      "crashed": false,
+      "moves": 136,
+      "length": 49,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 7,
+      "height": 7,
+      "apples": 10,
+      "seed": 3,
+      "won": true,
+      "crashed": false,
+      "moves": 106,
+      "length": 49,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 10,
+      "height": 10,
+      "apples": 1,
+      "seed": 1,
+      "won": true,
+      "crashed": false,
+      "moves": 2492,
+      "length": 100,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 10,
+      "height": 10,
+      "apples": 1,
+      "seed": 2,
+      "won": true,
+      "crashed": false,
+      "moves": 2277,
+      "length": 100,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 10,
+      "height": 10,
+      "apples": 1,
+      "seed": 3,
+      "won": true,
+      "crashed": false,
+      "moves": 2267,
+      "length": 100,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 10,
+      "height": 10,
+      "apples": 3,
+      "seed": 1,
+      "won": true,
+      "crashed": false,
+      "moves": 914,
+      "length": 100,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 10,
+      "height": 10,
+      "apples": 3,
+      "seed": 2,
+      "won": true,
+      "crashed": false,
+      "moves": 741,
+      "length": 100,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 10,
+      "height": 10,
+      "apples": 3,
+      "seed": 3,
+      "won": true,
+      "crashed": false,
+      "moves": 811,
+      "length": 100,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 10,
+      "height": 10,
+      "apples": 10,
+      "seed": 1,
+      "won": true,
+      "crashed": false,
+      "moves": 311,
+      "length": 100,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 10,
+      "height": 10,
+      "apples": 10,
+      "seed": 2,
+      "won": true,
+      "crashed": false,
+      "moves": 301,
+      "length": 100,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 10,
+      "height": 10,
+      "apples": 10,
+      "seed": 3,
+      "won": true,
+      "crashed": false,
+      "moves": 271,
+      "length": 100,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 15,
+      "height": 15,
+      "apples": 1,
+      "seed": 1,
+      "won": true,
+      "crashed": false,
+      "moves": 11354,
+      "length": 225,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 15,
+      "height": 15,
+      "apples": 1,
+      "seed": 2,
+      "won": true,
+      "crashed": false,
+      "moves": 11134,
+      "length": 225,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 15,
+      "height": 15,
+      "apples": 3,
+      "seed": 1,
+      "won": true,
+      "crashed": false,
+      "moves": 4276,
+      "length": 225,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 15,
+      "height": 15,
+      "apples": 3,
+      "seed": 2,
+      "won": true,
+      "crashed": false,
+      "moves": 3748,
+      "length": 225,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 15,
+      "height": 15,
+      "apples": 10,
+      "seed": 1,
+      "won": true,
+      "crashed": false,
+      "moves": 1526,
+      "length": 225,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 15,
+      "height": 15,
+      "apples": 10,
+      "seed": 2,
+      "won": true,
+      "crashed": false,
+      "moves": 1438,
+      "length": 225,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 20,
+      "height": 20,
+      "apples": 1,
+      "seed": 1,
+      "won": true,
+      "crashed": false,
+      "moves": 34134,
+      "length": 400,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 20,
+      "height": 20,
+      "apples": 1,
+      "seed": 2,
+      "won": true,
+      "crashed": false,
+      "moves": 34524,
+      "length": 400,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 20,
+      "height": 20,
+      "apples": 3,
+      "seed": 1,
+      "won": true,
+      "crashed": false,
+      "moves": 12478,
+      "length": 400,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 20,
+      "height": 20,
+      "apples": 3,
+      "seed": 2,
+      "won": true,
+      "crashed": false,
+      "moves": 12723,
+      "length": 400,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 20,
+      "height": 20,
+      "apples": 10,
+      "seed": 1,
+      "won": true,
+      "crashed": false,
+      "moves": 3699,
+      "length": 400,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 20,
+      "height": 20,
+      "apples": 10,
+      "seed": 2,
+      "won": true,
+      "crashed": false,
+      "moves": 3982,
+      "length": 400,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 30,
+      "height": 30,
+      "apples": 1,
+      "seed": 1,
+      "won": true,
+      "crashed": false,
+      "moves": 185188,
+      "length": 900,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 30,
+      "height": 30,
+      "apples": 3,
+      "seed": 1,
+      "won": true,
+      "crashed": false,
+      "moves": 63390,
+      "length": 900,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    },
+    {
+      "width": 30,
+      "height": 30,
+      "apples": 10,
+      "seed": 1,
+      "won": true,
+      "crashed": false,
+      "moves": 20104,
+      "length": 900,
+      "fast_enabled": true,
+      "modes": [
+        "CYCLE",
+        "FAST",
+        "RECOVERY"
+      ]
+    }
+  ]
+}
