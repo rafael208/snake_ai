@@ -1,6 +1,7 @@
 # ui.py
 
 import math
+import random
 from pathlib import Path
 
 import pygame
@@ -47,6 +48,16 @@ class UI:
         self.trail = []
         self.head_angle = None
         self._angle_ms = pygame.time.get_ticks()
+
+        self._rng = random.Random()
+        self.blinking = False
+        self.blink_start = 0
+        self.blink_next = 0
+        self.blink_duration = 120
+        self.tongue_active = False
+        self.tongue_start = 0
+        self.tongue_next = 0
+        self.tongue_duration = 360
 
         self.layout = layout or compute_game_layout(
             game.board.width,
@@ -804,6 +815,16 @@ class UI:
         ]
         self.head_angle = None
         self._angle_ms = pygame.time.get_ticks()
+        self._reset_animation()
+
+    def _reset_animation(self) -> None:
+        now = pygame.time.get_ticks()
+        self.blinking = False
+        self.blink_start = now
+        self.blink_next = now + self._rng.randint(2600, 4800)
+        self.tongue_active = False
+        self.tongue_start = now
+        self.tongue_next = now + self._rng.randint(2200, 4300)
 
     @staticmethod
     def _distance(a, b) -> float:
@@ -967,10 +988,74 @@ class UI:
             self.head_angle = (self.head_angle + delta * factor) % 360.0
         self._angle_ms = now
 
+        if not self.blinking and now >= self.blink_next:
+            self.blinking = True
+            self.blink_start = now
+        if self.blinking and now - self.blink_start >= self.blink_duration:
+            self.blinking = False
+            self.blink_next = now + self._rng.randint(2600, 4800)
+
+        if not self.tongue_active and now >= self.tongue_next:
+            self.tongue_active = True
+            self.tongue_start = now
+        if (
+            self.tongue_active
+            and now - self.tongue_start >= self.tongue_duration
+        ):
+            self.tongue_active = False
+            self.tongue_next = now + self._rng.randint(2200, 4300)
+
         angle = int(round(self.head_angle)) % 360
 
         head_size = int(cell * 1.08) + 2
         head_name = f"snake_head_{self.asset_theme}"
+        if self.blinking:
+            head_name += "_blink"
+
+        # Язык рисуется под головой: виден только кончик, который
+        # высовывается изо рта при короткой «вспышке».
+        if self.tongue_active:
+            progress = (
+                now - self.tongue_start
+            ) / max(1, self.tongue_duration)
+            strength = math.sin(math.pi * max(0.0, min(1.0, progress)))
+            if strength > 0.04:
+                radians = math.radians(self.head_angle)
+                fx = math.cos(radians)
+                fy = -math.sin(radians)
+                lx, ly = -fy, fx
+                start = (
+                    points[0][0] + fx * head_size * 0.30 + lx * head_size * 0.05,
+                    points[0][1] + fy * head_size * 0.30 + ly * head_size * 0.05,
+                )
+                length = head_size * 0.85 * strength
+                tip = (
+                    start[0] + fx * length,
+                    start[1] + fy * length,
+                )
+                fork = head_size * 0.22
+                tongue_width = max(2, int(head_size * 0.08))
+                tongue_color = (214, 58, 78)
+
+                pygame.draw.line(
+                    self.screen,
+                    tongue_color,
+                    start,
+                    tip,
+                    tongue_width,
+                )
+                for sign in (-1, 1):
+                    pygame.draw.line(
+                        self.screen,
+                        tongue_color,
+                        tip,
+                        (
+                            tip[0] + fx * fork + lx * sign * fork * 0.7,
+                            tip[1] + fy * fork + ly * sign * fork * 0.7,
+                        ),
+                        tongue_width,
+                    )
+
         head = self._sprite(head_name, head_size, angle)
 
         self.screen.blit(

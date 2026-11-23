@@ -133,7 +133,7 @@ def snake_tail(top, bottom, scale_color, name):
     save(surface, f"snake_tail_{name}.png")
 
 
-def snake_head(color, name):
+def snake_head(color, name, blink=False):
     surface = canvas()
     mask = canvas()
     head_body = int(S * 0.76)
@@ -153,13 +153,32 @@ def snake_head(color, name):
     surface.fill(color + (255,))
     surface.blit(mask, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
 
-    # Глаза.
-    eye_x = head_x + int(radius * 0.42)
+    # Большие выразительные глаза.
+    eye_x = head_x + int(radius * 0.28)
     eye_y = int(radius * 0.42)
-    eye_r = max(4, int(S * 0.095))
+    eye_r = max(5, int(S * 0.125))
 
     for sign in (-1, 1):
         cy = MID + sign * eye_y
+
+        if blink:
+            # Закрытый глаз — дуга века, без белка.
+            rect = pygame.Rect(
+                eye_x - eye_r,
+                cy - eye_r // 2,
+                eye_r * 2,
+                eye_r,
+            )
+            pygame.draw.arc(
+                surface,
+                (24, 48, 96),
+                rect,
+                math.radians(200),
+                math.radians(340),
+                max(6, S // 42),
+            )
+            continue
+
         pygame.draw.circle(
             surface,
             (250, 253, 255),
@@ -170,7 +189,7 @@ def snake_head(color, name):
             surface,
             (19, 26, 34),
             (eye_x + eye_r // 3, cy),
-            max(2, int(eye_r * 0.50)),
+            max(3, int(eye_r * 0.50)),
         )
         pygame.draw.circle(
             surface,
@@ -179,15 +198,17 @@ def snake_head(color, name):
             max(2, eye_r // 4),
         )
 
-    # Ноздря.
-    pygame.draw.circle(
-        surface,
-        (24, 48, 96),
-        (head_x + int(radius * 0.78), MID + 5),
-        max(2, S // 130),
-    )
+    # Пара ноздрей у кончика морды.
+    nostril_x = head_x + int(radius * 0.80)
+    for sign in (-1, 1):
+        pygame.draw.circle(
+            surface,
+            (24, 48, 96),
+            (nostril_x, MID + sign * int(radius * 0.16)),
+            max(4, S // 60),
+        )
 
-    # Рот и язычок.
+    # Рот. Язык рисуется отдельно в UI и появляется только при «вспышке».
     pygame.draw.line(
         surface,
         (24, 48, 96),
@@ -196,25 +217,8 @@ def snake_head(color, name):
         max(2, OUTLINE // 2),
     )
 
-    tongue_x = head_x + radius - 4
-    tongue_tip = min(S - 3, tongue_x + int(S * 0.12))
-    pygame.draw.line(
-        surface,
-        (214, 58, 78),
-        (tongue_x, MID + 2),
-        (tongue_tip, MID + 7),
-        max(2, S // 110),
-    )
-    for sign in (-1, 1):
-        pygame.draw.line(
-            surface,
-            (214, 58, 78),
-            (tongue_tip, MID + 7),
-            (tongue_tip - 5, MID + 7 + sign * 8),
-            max(2, S // 110),
-        )
-
-    save(surface, f"snake_head_{name}.png")
+    suffix = "_blink" if blink else ""
+    save(surface, f"snake_head_{name}{suffix}.png")
 
 
 def apple():
@@ -306,6 +310,7 @@ for palette, top, bottom, scale_color, head_color in (
     snake_corner(top, bottom, scale_color, palette)
     snake_tail(top, bottom, scale_color, palette)
     snake_head(head_color, palette)
+    snake_head(head_color, palette, blink=True)
 
 apple()
 board_tile(True)
