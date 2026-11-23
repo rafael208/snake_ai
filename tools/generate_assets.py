@@ -140,17 +140,14 @@ def snake_head(color, name):
     radius = head_body // 2
     head_x = int(S * 0.58)
 
-    # Голова — продолжение тела той же толщины: шея + круглая шапка.
+    # Голова — вытянутая капсула: скруглена и сзади, и спереди.
+    # Она длиннее своей ширины, поэтому не выглядит просто кругом,
+    # но у неё нет прямых углов, которые цеплялись бы на поворотах.
     pygame.draw.rect(
         mask,
         (255, 255, 255, 255),
-        (-radius, MID - radius, head_x + radius, head_body),
-    )
-    pygame.draw.circle(
-        mask,
-        (255, 255, 255, 255),
-        (head_x, MID),
-        radius,
+        (0, MID - radius, head_x + radius, head_body),
+        border_radius=radius,
     )
 
     surface.fill(color + (255,))

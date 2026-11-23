@@ -45,6 +45,8 @@ class UI:
         self.animation_start = pygame.time.get_ticks()
         self.animation_duration = 1000.0 / self.fps
         self.trail = []
+        self.head_angle = None
+        self._angle_ms = pygame.time.get_ticks()
 
         self.layout = layout or compute_game_layout(
             game.board.width,
@@ -381,9 +383,21 @@ class UI:
         image = self._rotated_assets.get(key)
 
         if image is None:
-            image = self._scaled_asset(name, size)
             if angle:
-                image = pygame.transform.rotate(image, angle)
+                # Вращаем в увеличенном масштабе и только потом уменьшаем:
+                # иначе на маленьком спрайте видны рваные пиксельные углы.
+                high_size = max(int(size) * 3, 96)
+                high = pygame.transform.smoothscale(
+                    self._asset(name),
+                    (high_size, high_size),
+                )
+                rotated = pygame.transform.rotate(high, angle)
+                image = pygame.transform.smoothscale(
+                    rotated,
+                    (int(size), int(size)),
+                )
+            else:
+                image = self._scaled_asset(name, size)
             self._rotated_assets[key] = image
 
         return image
@@ -788,6 +802,8 @@ class UI:
             self.cell_center(*cell)
             for cell in reversed(self.game.snake.body)
         ]
+        self.head_angle = None
+        self._angle_ms = pygame.time.get_ticks()
 
     @staticmethod
     def _distance(a, b) -> float:
@@ -937,9 +953,21 @@ class UI:
             dx = body[0][0] - body[1][0] if len(body) > 1 else 1
             dy = body[0][1] - body[1][1] if len(body) > 1 else 0
 
-        angle = int(
-            round(math.degrees(math.atan2(-dy, dx)) / 3.0) * 3
-        )
+        target_angle = math.degrees(math.atan2(-dy, dx))
+
+        # На низком FPS голова не должна мгновенно «щёлкать» на 90°.
+        # Сглаживаем угол по времени, но оставляем её овальной, не круглой.
+        now = pygame.time.get_ticks()
+        if self.head_angle is None:
+            self.head_angle = target_angle % 360.0
+        else:
+            delta = (target_angle - self.head_angle + 180.0) % 360.0 - 180.0
+            dt = max(1, min(50, now - self._angle_ms)) / 1000.0
+            factor = 1.0 - math.exp(-dt / 0.075)
+            self.head_angle = (self.head_angle + delta * factor) % 360.0
+        self._angle_ms = now
+
+        angle = int(round(self.head_angle)) % 360
 
         head_size = int(cell * 1.08) + 2
         head_name = f"snake_head_{self.asset_theme}"
